@@ -1,20 +1,6 @@
 # Chorus Network Analysis
 # GreekDraCor corpus via rdracor API
 
-# Structure:
-# 1 Packages
-# 2 Data import via rdracor
-# 3 Graph creation
-# 4 Network metrics: density, shortest path, diameter, components, transitivity
-# 5 Centrality: degree, eigenvector, betweenness
-# 6 Community detection (greedy modularity)
-# 7 Visualization
-# 8 Scale up: all Greek plays with chorus comparison
-# 9 Summary plots
-
-# Required packages:
-# install.packages(c("igraph", "dplyr", "rdracor"))
-
 # 1: set-up -------------------------------------------------------------
 
 library(igraph)
@@ -27,7 +13,7 @@ dir.create(output_dir, showWarnings = FALSE)
 
 # 2: data import ---------------------------------------------------------
 
-# rdracor provides a co-occurrence network directly from the DraCor API as an igraph object.
+# rdracor provides co-occurrence network directly from the DraCor API as igraph 
 G <- get_net_cooccur_igraph(play = "sophocles-antigone", corpus = "greek")
 print(G)
 
@@ -59,9 +45,6 @@ chorus_name <- if (length(chorus_idx) > 0) V(G)$name[chorus_idx[1]] else NA
 cat("Chorus node:", chorus_name, "\n")
 
 # 4: Global Network Metrics ----------------------------------------------
-
-#compute Global Network Metrics
-# add would be interesting to know if chorus is in longest of all paths?
 
 # 4.1 Density
 # Verhältnis nodes zu edges
@@ -97,7 +80,6 @@ cat("Transitivity:", round(trans_val, 4), "\n")
 
 # 5.1 Degree
 # sum of all edges of a node
-# importance of a node?
 # high degree called hubs
 degree.G <- degree(G)
 
@@ -211,7 +193,8 @@ dev.off()
 
 #  8: Scale to all plays --------------------------------------------------
 
-# Loop over the full GreekDraCor corpus and record chorus metrics per play.
+# scale to GreekDraCor corpus
+# record chorus metrics per play
 
 greek_plays <- get_dracor(corpus = "greek")
 
@@ -263,7 +246,6 @@ for (i in seq_len(nrow(greek_plays))) {
     ch_betw <- if (ch_found) betw[ch_name] else NA
     
     
-    
     # Protagonist = highest-degree non-chorus character
     
     deg_sorted <- sort(deg, decreasing = TRUE)
@@ -273,7 +255,6 @@ for (i in seq_len(nrow(greek_plays))) {
     protag <- names(non_ch)[1]
     
     protag_deg <- non_ch[1]
-    
     
     
     # Community detection
@@ -346,8 +327,7 @@ cat("Plays with chorus:", nrow(chorus_df), "\n")
 
 #  9: summary -------------------------------------------------------------
 
-cat("\n--- Chorus centrality by author ---\n")
-
+# chorus centrality by author
 chorus_df %>%
   
   group_by(author) %>%
@@ -385,7 +365,6 @@ write.csv(chorus_df, file.path(output_dir, "chorus_metrics.csv"),
           row.names = FALSE)
 
 cat("\nCSVs saved to", output_dir, "\n")
-
 
 
 #  10: Plots --------------------------------------------------------------
