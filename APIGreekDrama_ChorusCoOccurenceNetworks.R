@@ -1,14 +1,5 @@
 # Greek Drama Chorus Network
 
-# Analyse the structural role of the chorus in Greek drama
-# using DraCor character co-occurrence networks.
-#
-# Research question example:
-# How does the structural position of the chorus differ
-# across Aeschylus, Sophocles, Euripides, and Aristophanes?
-#add list and find all "Χορός" names in corpus
-
-
 #  0: libraries & set up -----------------------------------------------------------
 
 library(rdracor)
@@ -21,10 +12,9 @@ library(ggraph)
 dir.create("plots", showWarnings = FALSE)
 
 #  1: help functions -----------------------------------------------------------
-#add help function overview
 
 # 1.1 Prepare graph
-# Ensure network is undirected for centrality metrics
+# make sure network is undirected for centrality metrics
 
 prepare_graph <- function(g){
   
@@ -37,9 +27,7 @@ prepare_graph <- function(g){
 }
 
 # 1.2 detect chorus nodes
-
-# Detect chorus nodes
-# Returns indices of all nodes containing "Χορός"
+# returns indices of all nodes containing "Χορός"
 
 detect_chorus <- function(g){
   
